@@ -1,0 +1,117 @@
+@import url("https://fonts.cdnfonts.com/css/unbound-gamer");
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Unbound Gamer", sans-serif;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+}
+
+.game-button {
+  margin-bottom: 50px;
+}
+
+.game {
+  width: fit-content;
+  padding: 50px;
+  background-color: #272626;
+  border-radius: 100%;
+}
+
+.game .game-row:first-child {
+  margin-bottom: 50px;
+}
+
+.game-row {
+  display: flex;
+}
+
+.game-row .color:first-child {
+  margin-right: 50px;
+}
+
+.game .game-row:nth-child(2) {
+  justify-content: center;
+  align-items: center;
+}
+
+.counter {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  background-color: #272626;
+  color: white;
+  font-size: 7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 9999;
+  top: 40%;
+}
+
+.color {
+  width: 300px;
+  height: 300px;
+  cursor: pointer;
+}
+
+.color-red {
+  background-color: darkred;
+  border-top-left-radius: 100%;
+}
+
+.color-blue {
+  background-color: darkblue;
+  border-top-right-radius: 100%;
+}
+
+.color-green {
+  background-color: darkgreen;
+  border-bottom-left-radius: 100%;
+}
+
+.color-yellow {
+  background-color: goldenrod;
+  border-bottom-right-radius: 100%;
+}
+
+.color-red:hover {
+  background-color: crimson;
+}
+
+.color-blue:hover {
+  background-color: lightblue;
+}
+
+.color-green:hover {
+  background-color: lightgreen;
+}
+
+.color-yellow:hover {
+  background-color: khaki;
+}
+
+.color-red.active {
+  background-color: red;
+}
+
+.color-blue.active {
+  background-color: blue;
+}
+
+.color-green.active {
+  background-color: green;
+}
+
+.color-yellow.active {
+  background-color: yellow;
+}
