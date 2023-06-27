@@ -26,13 +26,11 @@ async function gameStart() {
   succession = 0;
   controlButton.style.visibility = "hidden";
   changeColorButtonsState("none");
-  await Promise.all(
-    colorSuccession.map(async (value) => {
-      lightUpColor(value);
-      await new Promise((r) => setTimeout(r, TIME));
-      lightOffColor(value);
-    })
-  );
+  colorSuccession.forEach(async (value) => {
+    lightUpColor(value);
+    await new Promise((r) => setTimeout(r, TIME));
+    lightOffColor(value);
+  });
   var newColor = Math.floor(Math.random() * 4 + 1);
   colorSuccession.push(newColor);
   lightUpColor(newColor);
