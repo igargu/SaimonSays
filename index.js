@@ -1,3 +1,4 @@
+const TIME = 1500;
 let counter = 0;
 let succession;
 const colorSuccession = [];
@@ -21,39 +22,49 @@ controlButton.addEventListener("click", function () {
   gameStart();
 });
 
-function gameStart() {
+async function gameStart() {
   succession = 0;
   controlButton.style.visibility = "hidden";
-  changeColorButtonsState(false);
-  colorSuccession.forEach(function (value) {
-    showColor(value);
-  });
+  changeColorButtonsState("none");
+  await Promise.all(
+    colorSuccession.map(async (value) => {
+      lightUpColor(value);
+      await new Promise((r) => setTimeout(r, TIME));
+      lightOffColor(value);
+    })
+  );
   var newColor = Math.floor(Math.random() * 4 + 1);
   colorSuccession.push(newColor);
-  showColor(newColor);
-  console.log(succession);
-  changeColorButtonsState(true);
+  lightUpColor(newColor);
+  await new Promise((r) => setTimeout(r, TIME));
+  lightOffColor(newColor);
+  changeColorButtonsState("auto");
 }
 
-function checkColor(idColor) {
+async function checkColor(idColor) {
+  changeColorButtonsState("none");
   if (idColor === colorSuccession[succession]) {
-    showColor(idColor);
+    lightUpColor(idColor);
+    await new Promise((r) => setTimeout(r, TIME - 500));
+    lightOffColor(idColor);
     succession++;
   } else {
     gameOver();
   }
   if (succession === colorSuccession.length) {
+    await new Promise((r) => setTimeout(r, TIME));
     incrementCounter();
     gameStart();
   }
+  changeColorButtonsState("auto");
 }
 
-function showColor(idColor) {
-  var color = document.getElementById(`color-${idColor}`);
-  color.classList.add("active");
-  setTimeout(function () {
-    color.classList.remove("active");
-  }, 3000);
+function lightUpColor(idColor) {
+  document.getElementById(`color-${idColor}`).classList.add("active");
+}
+
+function lightOffColor(idColor) {
+  document.getElementById(`color-${idColor}`).classList.remove("active");
 }
 
 function incrementCounter() {
@@ -63,7 +74,7 @@ function incrementCounter() {
 
 function changeColorButtonsState(state) {
   for (var i = 1; i <= 4; i++) {
-    document.getElementById(`color-${i}`).onclick = state;
+    document.getElementById(`color-${i}`).style.pointerEvents = state;
   }
 }
 
