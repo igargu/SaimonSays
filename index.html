@@ -9,6 +9,7 @@
   </head>
   <body>
     <div class="game-container">
+      <h1 class="high-score" id="high-score"></h1>
       <div class="game-button">
         <button class="control-button" id="control-button">start</button>
       </div>
@@ -23,6 +24,17 @@
         <div class="game-row">
           <div id="color-3" class="color color-green"></div>
           <div id="color-4" class="color color-yellow"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-text">
+          <h2 class="modal-title" id="modal-title"></h2>
+        </div>
+        <div class="modal-text">
+          <p class="modal-message" id="modal-message"></p>
         </div>
       </div>
     </div>

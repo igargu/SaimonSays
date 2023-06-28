@@ -1,22 +1,18 @@
-const TIME = 1500;
+const TIME = 500;
 let counter = 0;
 let succession;
-const colorSuccession = [];
+let colorSuccession = [];
+let highScore = localStorage.getItem("highScore");
 
 let controlButton = document.getElementById("control-button");
 
-document.getElementById("color-1").addEventListener("click", function () {
-  checkColor(1);
-});
-document.getElementById("color-2").addEventListener("click", function () {
-  checkColor(2);
-});
-document.getElementById("color-3").addEventListener("click", function () {
-  checkColor(3);
-});
-document.getElementById("color-4").addEventListener("click", function () {
-  checkColor(4);
-});
+for (let i = 1; i <= 4; i++) {
+  document.getElementById(`color-${i}`).addEventListener("click", function () {
+    checkColor(i);
+  });
+}
+
+document.getElementById("high-score").innerHTML = `High Score: ${highScore}`;
 
 controlButton.addEventListener("click", function () {
   gameStart();
@@ -24,13 +20,14 @@ controlButton.addEventListener("click", function () {
 
 async function gameStart() {
   succession = 0;
-  controlButton.style.visibility = "hidden";
+  controlButton.style.display = "none";
   changeColorButtonsState("none");
-  colorSuccession.forEach(async (value) => {
-    lightUpColor(value);
+  for (let color of colorSuccession) {
+    lightUpColor(color);
     await new Promise((r) => setTimeout(r, TIME));
-    lightOffColor(value);
-  });
+    lightOffColor(color);
+    await new Promise((r) => setTimeout(r, TIME));
+  }
   var newColor = Math.floor(Math.random() * 4 + 1);
   colorSuccession.push(newColor);
   lightUpColor(newColor);
@@ -40,21 +37,23 @@ async function gameStart() {
 }
 
 async function checkColor(idColor) {
+  var wrongColor = false;
   changeColorButtonsState("none");
   if (idColor === colorSuccession[succession]) {
     lightUpColor(idColor);
-    await new Promise((r) => setTimeout(r, TIME - 500));
+    await new Promise((r) => setTimeout(r, TIME / 200));
     lightOffColor(idColor);
+    await new Promise((r) => setTimeout(r, TIME));
     succession++;
   } else {
+    wrongColor = true;
     gameOver();
   }
-  if (succession === colorSuccession.length) {
-    await new Promise((r) => setTimeout(r, TIME));
-    incrementCounter();
+  changeColorButtonsState("auto");
+  if (succession === colorSuccession.length && !wrongColor) {
+    updateCounter();
     gameStart();
   }
-  changeColorButtonsState("auto");
 }
 
 function lightUpColor(idColor) {
@@ -65,9 +64,15 @@ function lightOffColor(idColor) {
   document.getElementById(`color-${idColor}`).classList.remove("active");
 }
 
-function incrementCounter() {
-  counter++;
+function updateCounter(pts) {
+  counter = pts === 0 ? pts : counter + 1;
   document.getElementById("counter").innerHTML = counter;
+  if (counter > highScore) {
+    localStorage.setItem("highScore", counter);
+    document.getElementById(
+      "high-score"
+    ).innerHTML = `High Score: ${highScore}`;
+  }
 }
 
 function changeColorButtonsState(state) {
@@ -77,11 +82,20 @@ function changeColorButtonsState(state) {
 }
 
 function gameOver() {
-  console.log("You lose");
-  // Show modal: "You lose! Record: ${counter}"
-  // Disabled DOM under modal
-  // When close modal {
-  //    Restart counter
-  //    Empty array
-  controlButton.style.visibility = "visible";
+  var title = "You Lose!";
+  document.getElementById("modal").style.display = "block";
+  if (counter > highScore) {
+    title = "New High Score!";
+  }
+  document.getElementById("modal-title").innerHTML = title;
+  document.getElementById(
+    "modal-message"
+  ).innerHTML = `You're score: ${counter}`;
+  updateCounter(0);
+  colorSuccession = [];
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+  controlButton.style.display = "block";
 }
