@@ -20,7 +20,7 @@ controlButton.addEventListener("click", function () {
 
 async function gameStart() {
   succession = 0;
-  controlButton.style.display = "none";
+  document.getElementById("game-button-container").style.display = "none";
   changeColorButtonsState("none");
   for (let color of colorSuccession) {
     lightUpColor(color);
@@ -97,5 +97,5 @@ function gameOver() {
 
 function closeModal() {
   document.getElementById("modal").style.display = "none";
-  controlButton.style.display = "block";
+  document.getElementById("game-button-container").style.display = "flex";
 }
