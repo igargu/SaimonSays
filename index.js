@@ -3,6 +3,7 @@ let counter = 0;
 let succession;
 let colorSuccession = [];
 let highScore = localStorage.getItem("highScore");
+let buttonSound;
 
 let controlButton = document.getElementById("control-button");
 
@@ -23,6 +24,8 @@ async function gameStart() {
   document.getElementById("game-button-container").style.display = "none";
   changeColorButtonsState("none");
   for (let color of colorSuccession) {
+    buttonSound = new Audio(`./sounds/button-${color}-sound.flac`);
+    buttonSound.play();
     lightUpColor(color);
     await new Promise((r) => setTimeout(r, TIME));
     lightOffColor(color);
@@ -30,6 +33,8 @@ async function gameStart() {
   }
   var newColor = Math.floor(Math.random() * 4 + 1);
   colorSuccession.push(newColor);
+  buttonSound = new Audio(`./sounds/button-${newColor}-sound.flac`);
+  buttonSound.play();
   lightUpColor(newColor);
   await new Promise((r) => setTimeout(r, TIME));
   lightOffColor(newColor);
@@ -40,6 +45,8 @@ async function checkColor(idColor) {
   var wrongColor = false;
   changeColorButtonsState("none");
   if (idColor === colorSuccession[succession]) {
+    buttonSound = new Audio(`./sounds/button-${idColor}-sound.flac`);
+    buttonSound.play();
     lightUpColor(idColor);
     await new Promise((r) => setTimeout(r, TIME / 200));
     lightOffColor(idColor);
