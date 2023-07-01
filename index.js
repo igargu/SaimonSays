@@ -20,6 +20,7 @@ controlButton.addEventListener("click", function () {
 });
 
 async function gameStart() {
+  await new Promise((r) => setTimeout(r, TIME));
   succession = 0;
   document.getElementById("game-button-container").style.display = "none";
   changeColorButtonsState("none");
