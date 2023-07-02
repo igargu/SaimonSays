@@ -19,39 +19,43 @@ controlButton.addEventListener("click", function () {
   gameStart();
 });
 
-async function gameStart() {
-  await new Promise((r) => setTimeout(r, TIME));
+/*async */ function gameStart() {
+  //await new Promise((r) => setTimeout(r, TIME));
+  delay();
   succession = 0;
   document.getElementById("game-button-container").style.display = "none";
   changeColorButtonsState("none");
   for (let color of colorSuccession) {
     buttonSound = new Audio(`./sounds/button-${color}-sound.flac`);
     buttonSound.play();
-    lightUpColor(color);
+    lightColor(color);
+    /*lightUpColor(color);
     await new Promise((r) => setTimeout(r, TIME));
     lightOffColor(color);
-    await new Promise((r) => setTimeout(r, TIME));
+    await new Promise((r) => setTimeout(r, TIME));*/
   }
   var newColor = Math.floor(Math.random() * 4 + 1);
   colorSuccession.push(newColor);
   buttonSound = new Audio(`./sounds/button-${newColor}-sound.flac`);
   buttonSound.play();
-  lightUpColor(newColor);
+  lightColor(newColor);
+  /*lightUpColor(newColor);
   await new Promise((r) => setTimeout(r, TIME));
-  lightOffColor(newColor);
+  lightOffColor(newColor);*/
   changeColorButtonsState("auto");
 }
 
-async function checkColor(idColor) {
+/*async */ function checkColor(idColor) {
   var wrongColor = false;
   changeColorButtonsState("none");
   if (idColor === colorSuccession[succession]) {
     buttonSound = new Audio(`./sounds/button-${idColor}-sound.flac`);
     buttonSound.play();
-    lightUpColor(idColor);
+    lightColor(idColor);
+    /*lightUpColor(idColor);
     await new Promise((r) => setTimeout(r, TIME / 200));
     lightOffColor(idColor);
-    await new Promise((r) => setTimeout(r, TIME));
+    await new Promise((r) => setTimeout(r, TIME));*/
     succession++;
   } else {
     wrongColor = true;
@@ -64,13 +68,13 @@ async function checkColor(idColor) {
   }
 }
 
-function lightUpColor(idColor) {
+/*function lightUpColor(idColor) {
   document.getElementById(`color-${idColor}`).classList.add("active");
 }
 
 function lightOffColor(idColor) {
   document.getElementById(`color-${idColor}`).classList.remove("active");
-}
+}*/
 
 function updateCounter(pts) {
   counter = pts === 0 ? pts : counter + 1;
@@ -106,4 +110,15 @@ function gameOver() {
 function closeModal() {
   document.getElementById("modal").style.display = "none";
   document.getElementById("game-button-container").style.display = "flex";
+}
+
+function lightColor(idColor) {
+  document.getElementById(`color-${idColor}`).classList.add("active");
+  delay();
+  document.getElementById(`color-${idColor}`).classList.remove("active");
+  delay();
+}
+
+async function delay(sec = TIME) {
+  await new Promise((r) => setTimeout(r, sec));
 }
