@@ -4,7 +4,6 @@ let succession;
 let colorSuccession = [];
 let highScore = localStorage.getItem("highScore");
 let buttonSound;
-
 let controlButton = document.getElementById("control-button");
 
 for (let i = 1; i <= 4; i++) {
@@ -13,15 +12,14 @@ for (let i = 1; i <= 4; i++) {
   });
 }
 
-document.getElementById("high-score").innerHTML = `High Score: ${highScore}`;
+document.getElementById("high-score").innerHTML = `high score: ${highScore}`;
 
 controlButton.addEventListener("click", function () {
   gameStart();
 });
 
-/*async */ function gameStart() {
-  //await new Promise((r) => setTimeout(r, TIME));
-  delay();
+async function gameStart() {
+  await delay();
   succession = 0;
   document.getElementById("game-button-container").style.display = "none";
   changeColorButtonsState("none");
@@ -29,33 +27,22 @@ controlButton.addEventListener("click", function () {
     buttonSound = new Audio(`./sounds/button-${color}-sound.flac`);
     buttonSound.play();
     lightColor(color);
-    /*lightUpColor(color);
-    await new Promise((r) => setTimeout(r, TIME));
-    lightOffColor(color);
-    await new Promise((r) => setTimeout(r, TIME));*/
   }
   var newColor = Math.floor(Math.random() * 4 + 1);
   colorSuccession.push(newColor);
   buttonSound = new Audio(`./sounds/button-${newColor}-sound.flac`);
   buttonSound.play();
   lightColor(newColor);
-  /*lightUpColor(newColor);
-  await new Promise((r) => setTimeout(r, TIME));
-  lightOffColor(newColor);*/
   changeColorButtonsState("auto");
 }
 
-/*async */ function checkColor(idColor) {
+function checkColor(idColor) {
   var wrongColor = false;
   changeColorButtonsState("none");
   if (idColor === colorSuccession[succession]) {
     buttonSound = new Audio(`./sounds/button-${idColor}-sound.flac`);
     buttonSound.play();
     lightColor(idColor);
-    /*lightUpColor(idColor);
-    await new Promise((r) => setTimeout(r, TIME / 200));
-    lightOffColor(idColor);
-    await new Promise((r) => setTimeout(r, TIME));*/
     succession++;
   } else {
     wrongColor = true;
@@ -67,14 +54,6 @@ controlButton.addEventListener("click", function () {
     gameStart();
   }
 }
-
-/*function lightUpColor(idColor) {
-  document.getElementById(`color-${idColor}`).classList.add("active");
-}
-
-function lightOffColor(idColor) {
-  document.getElementById(`color-${idColor}`).classList.remove("active");
-}*/
 
 function updateCounter(pts) {
   counter = pts === 0 ? pts : counter + 1;
@@ -97,7 +76,7 @@ function gameOver() {
   var title = "You Lose!";
   document.getElementById("modal").style.display = "block";
   if (counter > highScore) {
-    title = "New High Score!";
+    title = "new high score!";
   }
   document.getElementById("modal-title").innerHTML = title;
   document.getElementById(
@@ -112,13 +91,13 @@ function closeModal() {
   document.getElementById("game-button-container").style.display = "flex";
 }
 
-function lightColor(idColor) {
+async function lightColor(idColor) {
   document.getElementById(`color-${idColor}`).classList.add("active");
-  delay();
+  await delay();
   document.getElementById(`color-${idColor}`).classList.remove("active");
-  delay();
+  await delay();
 }
 
-async function delay(sec = TIME) {
-  await new Promise((r) => setTimeout(r, sec));
+function delay(sec = TIME) {
+  return new Promise((r) => setTimeout(r, sec));
 }
